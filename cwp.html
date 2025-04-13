@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Askool - Chapter Points</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 1s linear infinite; display: inline-block; }
+        
+        /* Dark theme with gradients */
+        body {
+            background: linear-gradient(135deg, #0a0a1a 0%, #000000 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        /* Glassmorphism and neon effects */
+        .glass-card {
+            background: rgba(15, 15, 25, 0.7);
+            border: 1px solid rgba(0, 123, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 123, 255, 0.15);
+        }
+        
+        .glass-input {
+            background: rgba(20, 20, 35, 0.7);
+            border: 1px solid rgba(0, 123, 255, 0.3);
+            color: white;
+        }
+        
+        .neon-blue {
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .neon-blue:hover {
+            box-shadow: 0 0 25px rgba(0, 123, 255, 0.8);
+            transform: translateY(-3px);
+        }
+        
+        .neon-cyan {
+            box-shadow: 0 0 15px rgba(0, 255, 213, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .neon-cyan:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 213, 0.8);
+            transform: translateY(-3px);
+        }
+        
+        /* Form elements */
+        select {
+            height: 42px;
+            background-color: rgba(20, 20, 35, 0.7);
+            color: white;
+            border: 1px solid rgba(0, 123, 255, 0.3);
+        }
+        
+        select:disabled, button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        select option {
+            background-color: #0a0a1a;
+            color: white;
+        }
+        
+        /* Points list styling */
+        .points-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .points-list li {
+            display: flex;
+            align-items: start;
+            margin-bottom: 0.8rem;
+            transition: all 0.2s ease;
+        }
+        
+        .points-list li:hover {
+            transform: translateX(5px);
+        }
+        
+        .points-list li::before {
+            content: '•';
+            color: #00FFD5;
+            margin-right: 0.75rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+        
+        /* Header styling to match landing page */
+        .askool-header {
+            color: #007BFF;
+            font-weight: bold;
+        }
+        
+        /* Typing effect for taglines */
+        .typing-effect {
+            font-family: inherit;
+            border-right: 2px solid #00FFD5;
+            white-space: nowrap;
+            overflow: hidden;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            font-weight: 500;
+            color: #007BFF;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00FFD5 }
+        }
+        
+        /* Logo positioning */
+        .logo-container-top-left {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            z-index: 10;
+            width: 250px;
+            height: 250px;
+            /* Removed overflow:hidden to allow overlap */
+        }
+        
+        .logo-container-bottom-right {
+            position: fixed;
+            bottom: -20px;
+            right: -20px;
+            z-index: 10;
+            width: 250px;
+            height: 250px;
+            /* Removed overflow:hidden to allow overlap */
+        }
+        
+        .logo-container-top-left img,
+        .logo-container-bottom-right img {
+            width: 100%;
+            height: auto;
+            opacity: 0.85; /* Slightly reduce opacity for better text readability */
+        }
+        
+        /* Ensure the typing effect is visible above the owl images */
+        .typing-effect {
+            position: relative;
+            z-index: 20; /* Higher than the owl logos */
+        }
+        
+        /* Adjust main content to not overlap with the owls */
+        @media (max-width: 768px) {
+            .logo-container-top-left,
+            .logo-container-bottom-right {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .content-container {
+                margin-top: 100px;
+                margin-bottom: 100px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans">
+     <!-- Top Left Owl Logo -->
+     <div class="logo-container-top-left">
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Adobe%20Express%20-%20file-InbAIoRuMdRPmyGFcoE94UoSVgx8Lb.png" alt="Askool Owl Logo">
+    </div>
+    
+    <!-- Bottom Right Owl Logo -->
+    <div class="logo-container-bottom-right">
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Adobe%20Express%20-%20file%20%281%29-sJ0HJrykbpsDjwv4nmlHoIC2b3LQ91.png" alt="Askool Cartoon Owl Logo">
+    </div>
+
+    <div class="min-h-screen p-4 sm:p-8 flex items-center justify-center">
+        <div class="max-w-4xl w-full mx-auto glass-card rounded-xl p-6 sm:p-10 text-white">
+
+            <div class="text-center mb-4">
+                <h1 class="text-3xl sm:text-4xl font-bold askool-header">Askool</h1>
+                <p class="text-[#00FFD5] text-lg mt-1">Chapter Important Points</p>
+                
+                <!-- Rotating Taglines Container -->
+                <div class="h-10 mt-3 flex justify-center">
+                    <p id="tagline" class="text-base md:text-lg typing-effect"></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 items-end">
+                <div>
+                    <label for="grade-select" class="block text-sm font-medium text-white mb-1">Grade</label>
+                    <select id="grade-select" name="grade" class="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007BFF] glass-input">
+                        <option value="" disabled selected>Select Grade...</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="subject-select" class="block text-sm font-medium text-white mb-1">Subject</label>
+                    <select id="subject-select" name="subject" class="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007BFF] glass-input" disabled>
+                        <option value="" disabled selected>Select Subject...</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="chapter-select" class="block text-sm font-medium text-white mb-1">Chapter</label>
+                    <select id="chapter-select" name="chapter" class="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#007BFF] glass-input" disabled>
+                        <option value="" disabled selected>Select Chapter...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center mb-8">
+                <button id="generate-button" class="px-8 py-3 rounded-lg text-white font-semibold transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007BFF] bg-[#0a0a1a] disabled:bg-gray-800 disabled:opacity-50" disabled>
+                    Generate Chapter Important Points
+                </button>
+                <p id="error-message" class="text-red-400 text-sm mt-2 h-5"></p>
+             </div>
+
+            <div id="results-area" class="mt-6 min-h-[100px]">
+                <div id="loading-indicator" class="text-center p-10 glass-card rounded-lg hidden">
+                    <span class="animate-spin text-3xl mb-4 inline-block">⏳</span>
+                    <p class="text-lg font-medium text-white">Generating Important Points for you </p>
+                </div>
+                <div id="points-display" class="glass-card p-4 sm:p-6 rounded-lg hidden animate-fade-in"></div>
+                 <div id="initial-placeholder" class="text-center py-8 text-gray-300">
+                    <p>Select Grade, Subject, and Chapter, then click Generate.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8 border-t border-[rgba(255,255,255,0.1)] pt-6">
+                <a href="https://askool.com/features" target="_blank" class="inline-block px-6 py-3 bg-[#007BFF] text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#007BFF] neon-blue">
+                    You're Almost In – Join the Waitlist!
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+
+    <script>
+        // --- DOM Elements ---
+        const gradeSelect = document.getElementById('grade-select');
+        const subjectSelect = document.getElementById('subject-select');
+        const chapterSelect = document.getElementById('chapter-select');
+        const generateButton = document.getElementById('generate-button');
+        const errorMessage = document.getElementById('error-message');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const pointsDisplay = document.getElementById('points-display');
+        const initialPlaceholder = document.getElementById('initial-placeholder');
+        const taglineElement = document.getElementById('tagline');
+
+        // --- Tagline Rotation System ---
+        const taglines = [
+            "Master Every Chapter with AI-Powered Smart Points",
+            "Used by Students. Loved by Toppers.",
+            "Join 1000+ Students Who Simplified Their Syllabus"
+        ];
+        
+        let currentTaglineIndex = 0;
+        
+        function typeTagline(text, element) {
+            // Reset the element
+            element.textContent = '';
+            element.style.width = '0';
+            element.classList.remove('typing-effect');
+            
+            // Force a reflow to restart the animation
+            void element.offsetWidth;
+            
+            // Set the text and restart the animation
+            element.textContent = text;
+            element.classList.add('typing-effect');
+            element.style.width = '100%';
+        }
+        
+        function rotateTaglines() {
+            typeTagline(taglines[currentTaglineIndex], taglineElement);
+            currentTaglineIndex = (currentTaglineIndex + 1) % taglines.length;
+        }
+        
+        // Initialize tagline rotation
+        rotateTaglines();
+        setInterval(rotateTaglines, 7000);
+
+        // --- Helper Functions ---
+        function getGrades() {
+            if (typeof chapterData === 'undefined' || chapterData === null) {
+                console.error("Chapter data not loaded or invalid.");
+                return [];
+            }
+            return Object.keys(chapterData);
+        }
+
+        function getSubjects(grade) {
+             if (typeof chapterData === 'undefined') return []; // Check if loaded
+            if (!grade || typeof chapterData !== 'object' || !chapterData[grade]) {
+                return [];
+            }
+            return Object.keys(chapterData[grade]);
+        }
+
+        function getChapters(grade, subject) {
+             if (typeof chapterData === 'undefined') return []; // Check if loaded
+            if (!grade || !subject || typeof chapterData !== 'object' || !chapterData[grade] || !chapterData[grade][subject]) {
+                return [];
+            }
+            return Object.keys(chapterData[grade][subject]);
+        }
+
+        function populateSelect(selectElement, options, placeholder) {
+            if (!selectElement) {
+                console.error("Invalid select element provided to populateSelect.");
+                return;
+            }
+            selectElement.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
+            if (!Array.isArray(options)) {
+                 console.error("Invalid options array provided to populateSelect.");
+                 return;
+            }
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                selectElement.appendChild(optionElement);
+            });
+        }
+
+        function updateButtonState() {
+             const grade = gradeSelect.value;
+             const subject = subjectSelect.value;
+             const chapter = chapterSelect.value;
+             if (!generateButton) return;
+
+             if (grade && subject && chapter) {
+                 generateButton.disabled = false;
+                 generateButton.classList.remove('bg-gray-800');
+                 generateButton.classList.add('bg-[#007BFF]', 'hover:bg-[#0056b3]', 'transform', 'hover:-translate-y-0.5', 'neon-blue');
+             } else {
+                 generateButton.disabled = true;
+                 generateButton.classList.add('bg-gray-800');
+                 generateButton.classList.remove('bg-[#007BFF]', 'hover:bg-[#0056b3]', 'transform', 'hover:-translate-y-0.5', 'neon-blue');
+             }
+        }
+
+        function renderPoints(data, chapterName) {
+             if (!pointsDisplay || !initialPlaceholder) return;
+
+            let html = '';
+            if (!data || (!data.dates?.length && !data.formulas?.length && !data.maps?.length && !data.meanings?.length)) {
+                html = `
+                    <div class="text-center py-8">
+                        <span class="text-3xl mb-3 inline-block">ℹ️</span>
+                        <p class="text-lg text-gray-300 font-medium">No important points found for this selection.</p>
+                    </div>
+                `;
+            } else {
+                html += `<h2 class="text-2xl font-semibold mb-6 text-center text-white">Key Points for: <span class="text-[#00FFD5]">${chapterName || 'Selected Chapter'}</span></h2>`;
+
+                const createSectionHtml = (title, points) => {
+                    if (!Array.isArray(points) || points.length === 0) return '';
+                    let sectionHtml = `
+                        <div class="mb-6 p-4 border border-[rgba(0,123,255,0.2)] rounded-lg bg-[rgba(15,15,25,0.7)]">
+                            <h3 class="text-lg font-semibold mb-3 text-[#007BFF]">${title}</h3>
+                            <ul class="points-list">`;
+                    points.forEach(point => {
+                        if (typeof point === 'object' && point !== null && point.hasOwnProperty('point')) {
+                            sectionHtml += `<li>${point.point}</li>`;
+                        } else {
+                            console.warn("Skipping invalid point structure:", point);
+                        }
+                    });
+                    sectionHtml += `</ul></div>`;
+                    return sectionHtml;
+                };
+
+                html += createSectionHtml('Important Dates', data.dates);
+                html += createSectionHtml('Important Formulas', data.formulas);
+                html += createSectionHtml('Maps or Locations', data.maps);
+                html += createSectionHtml('Key Meanings/Concepts', data.meanings);
+            }
+            pointsDisplay.innerHTML = html;
+            pointsDisplay.classList.remove('hidden');
+            initialPlaceholder.classList.add('hidden');
+        }
+
+        // --- Event Listeners ---
+        if (gradeSelect) {
+            gradeSelect.addEventListener('change', () => {
+                const selectedGrade = gradeSelect.value;
+                const subjects = getSubjects(selectedGrade);
+                populateSelect(subjectSelect, subjects, 'Select Subject...');
+                if (subjectSelect) {
+                    subjectSelect.disabled = subjects.length === 0;
+                }
+
+                populateSelect(chapterSelect, [], 'Select Chapter...');
+                if (chapterSelect) {
+                    chapterSelect.disabled = true;
+                }
+
+                if (pointsDisplay) pointsDisplay.classList.add('hidden');
+                if (pointsDisplay) pointsDisplay.innerHTML = '';
+                if (errorMessage) errorMessage.textContent = '';
+                if (initialPlaceholder) initialPlaceholder.classList.remove('hidden');
+
+                updateButtonState();
+            });
+        } else {
+             console.error("Grade select element not found.");
+        }
+
+        if (subjectSelect) {
+            subjectSelect.addEventListener('change', () => {
+                const selectedGrade = gradeSelect.value;
+                const selectedSubject = subjectSelect.value;
+                const chapters = getChapters(selectedGrade, selectedSubject);
+                populateSelect(chapterSelect, chapters, 'Select Chapter...');
+                if (chapterSelect) {
+                    chapterSelect.disabled = chapters.length === 0;
+                }
+
+                if (pointsDisplay) pointsDisplay.classList.add('hidden');
+                if (pointsDisplay) pointsDisplay.innerHTML = '';
+                if (errorMessage) errorMessage.textContent = '';
+                if (initialPlaceholder) initialPlaceholder.classList.remove('hidden');
+
+                updateButtonState();
+            });
+        } else {
+            console.error("Subject select element not found.");
+        }
+
+        if (chapterSelect) {
+             chapterSelect.addEventListener('change', () => {
+                if (pointsDisplay) pointsDisplay.classList.add('hidden');
+                if (pointsDisplay) pointsDisplay.innerHTML = '';
+                if (errorMessage) errorMessage.textContent = '';
+                if (initialPlaceholder) initialPlaceholder.classList.remove('hidden');
+                updateButtonState();
+             });
+        } else {
+            console.error("Chapter select element not found.");
+        }
+
+        if (generateButton) {
+            // Add usage tracking function at the start of the script
+            function checkUsageLimit() {
+                const lastVisit = localStorage.getItem('lastVisitDate');
+                const today = new Date().toDateString();
+                
+                // If it's a new day or first visit, reset usage count
+                if (!lastVisit || lastVisit !== today) {
+                    localStorage.setItem('chapterPointsUsage', '0');
+                    localStorage.setItem('lastVisitDate', today);
+                    return false;
+                }
+                
+                const usageCount = parseInt(localStorage.getItem('chapterPointsUsage') || '0');
+                return usageCount >= 3;
+            }
+
+            function incrementUsage() {
+                const currentUsage = parseInt(localStorage.getItem('chapterPointsUsage') || '0');
+                localStorage.setItem('chapterPointsUsage', currentUsage + 1);
+            }
+
+            function showLimitMessage() {
+                if (pointsDisplay) {
+                    pointsDisplay.innerHTML = `
+                        <div class="text-center py-8">
+                            <p class="text-xl font-semibold text-[#00FFD5] mb-4">Oops! You have run out of limit for testing this feature.</p>
+                            <p class="text-gray-300">Please Join the Waitlist to access this feature for unlimited usage</p>
+                        </div>
+                    `;
+                    pointsDisplay.classList.remove('hidden');
+                    if (initialPlaceholder) initialPlaceholder.classList.add('hidden');
+                    if (loadingIndicator) loadingIndicator.classList.add('hidden');
+                }
+            }
+
+            generateButton.addEventListener('click', () => {
+                const grade = gradeSelect ? gradeSelect.value : null;
+                const subject = subjectSelect ? subjectSelect.value : null;
+                const chapter = chapterSelect ? chapterSelect.value : null;
+
+                if (!grade || !subject || !chapter) {
+                    if (errorMessage) errorMessage.textContent = 'Please select Grade, Subject, and Chapter.';
+                    return;
+                }
+
+                // Check usage limit first
+                if (checkUsageLimit()) {
+                    showLimitMessage();
+                    return;
+                }
+
+                // Check if chapterData is loaded before trying to access it
+                if (typeof chapterData === 'undefined') {
+                    console.error("Chapter data not available for generation.");
+                    if (errorMessage) errorMessage.textContent = 'Error: Chapter data failed to load.';
+                    return;
+                }
+
+                if (errorMessage) errorMessage.textContent = '';
+                if (loadingIndicator) loadingIndicator.classList.remove('hidden');
+                if (pointsDisplay) pointsDisplay.classList.add('hidden');
+                if (pointsDisplay) pointsDisplay.innerHTML = '';
+                if (initialPlaceholder) initialPlaceholder.classList.add('hidden');
+                generateButton.disabled = true;
+
+                setTimeout(() => {
+                    try {
+                        // Access the globally loaded chapterData
+                        const gradeData = chapterData[grade];
+                        const subjectData = gradeData ? gradeData[subject] : null;
+                        const data = subjectData ? subjectData[chapter] : null;
+                        renderPoints(data, chapter);
+                        // Increment usage after successful generation
+                        incrementUsage();
+                    } catch (error) {
+                        console.error("Error fetching/rendering points:", error);
+                        if (errorMessage) errorMessage.textContent = 'An error occurred while fetching points.';
+                        if (pointsDisplay) pointsDisplay.classList.add('hidden');
+                        if (initialPlaceholder) initialPlaceholder.classList.remove('hidden');
+                    } finally {
+                        if (loadingIndicator) loadingIndicator.classList.add('hidden');
+                        updateButtonState();
+                    }
+                }, 2500);
+            });
+        } else {
+             console.error("Generate button element not found.");
+        }
+
+        // --- Initial Setup ---
+        window.addEventListener('load', () => {
+            console.log("Window loaded. Initializing setup...");
+            if (!gradeSelect) {
+                console.error("Cannot initialize: Grade select element not found on load.");
+                return;
+            }
+            // Check if chapterData is loaded before trying to use it
+            if (typeof chapterData === 'undefined') {
+                 console.error("Initialization Error: chapterData is not defined. Make sure data.js is loaded correctly before this script.");
+                 if(errorMessage) errorMessage.textContent = "Error: Failed to load chapter data.";
+                 // Optionally disable controls if data fails to load
+                 if(subjectSelect) subjectSelect.disabled = true;
+                 if(chapterSelect) chapterSelect.disabled = true;
+                 if(generateButton) generateButton.disabled = true;
+                 return; // Stop initialization
+            }
+
+            try {
+                const grades = getGrades();
+                console.log("Grades found:", grades);
+                populateSelect(gradeSelect, grades, 'Select Grade...');
+                updateButtonState();
+                console.log("Initial setup complete.");
+            } catch (error) {
+                 console.error("Error during initial setup:", error);
+                 if(errorMessage) errorMessage.textContent = "Initialization Error occurred.";
+            }
+        });
+    </script>
+
+</body>
+</html>
